@@ -31,8 +31,8 @@ function getStageForLandingPage(landingPageUrl) {
   const slug = extractSlug(landingPageUrl);
   
   if (!slug) {
-    console.log('No slug found');
-    return null;
+    console.log('No slug found - homepage or invalid URL');
+    return 'No stage found'; // Return "No stage found" when no slug
   }
   
   console.log(`Extracted slug: "${slug}"`);

@@ -54,7 +54,7 @@ function getStageForLandingPage(landingPageUrl) {
   }
   
   console.log(`No stage found for slug: "${slug}"`);
-  return null;
+  return 'No stage found'; // Return "No stage found" instead of null
 }
 
 /**
@@ -173,16 +173,8 @@ module.exports = async (req, res) => {
     // Get the stage for this landing page
     const stage = getStageForLandingPage(landingPage);
     
-    if (!stage) {
-      console.log(`No stage found for landing page: ${landingPage}`);
-      return res.status(200).json({ 
-        success: true,
-        message: 'Landing page not in mapping',
-        contactId: contactId,
-        landingPage: landingPage
-      });
-    }
-
+    // Stage will be either a valid stage (Decision/Consideration/Awareness) 
+    // or "No stage found" - we update the field in both cases
     console.log(`✓ Stage identified: ${stage}`);
     
     // Update the contact field (Field ID 272 - Website Page Stage)

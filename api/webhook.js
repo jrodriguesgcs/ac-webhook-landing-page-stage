@@ -62,8 +62,19 @@ function getStageForLandingPage(landingPageUrl) {
  */
 async function updateContactField(contactId, fieldId, fieldValue, apiUrl, apiKey) {
   try {
+    // Make sure apiUrl ends with /api/3
+    let baseUrl = apiUrl;
+    if (!baseUrl.endsWith('/api/3')) {
+      baseUrl = baseUrl.replace(/\/$/, '') + '/api/3';
+    }
+    
+    const endpoint = `${baseUrl}/contacts/${contactId}`;
+    
+    console.log(`Updating contact ${contactId} at: ${endpoint}`);
+    console.log(`Setting field ${fieldId} to: ${fieldValue}`);
+    
     const response = await axios.put(
-      `${apiUrl}/contacts/${contactId}`,
+      endpoint,
       {
         contact: {
           fieldValues: [

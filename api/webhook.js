@@ -121,17 +121,23 @@ module.exports = async (req, res) => {
     // Extract data from webhook
     const data = req.body;
     
-    // ActiveCampaign sends data in different formats, handle both
+    // Extract contact ID - ActiveCampaign sends it as contact[id]
     const contactId = 
       data['contact[id]'] || 
       data.contact?.id;
       
+    // Extract landing page - try multiple possible field locations
     const landingPage = 
       data['contact[fields][232]'] ||  // Field ID 232
+      data['contact[fields][first_touch_landing_page]'] ||  // Field name
       data['contact[LANDING_PAGE]'] ||
+      data['contact[FIRST_TOUCH_LANDING_PAGE]'] ||
       data.landing_page ||
+      data.first_touch_landing_page ||
       data.contact?.fields?.LANDING_PAGE ||
-      data.contact?.fields?.[232];
+      data.contact?.fields?.FIRST_TOUCH_LANDING_PAGE ||
+      data.contact?.fields?.[232] ||
+      data.contact?.fields?.first_touch_landing_page;
     
     console.log(`Contact ID: ${contactId}`);
     console.log(`Landing Page: ${landingPage}`);
